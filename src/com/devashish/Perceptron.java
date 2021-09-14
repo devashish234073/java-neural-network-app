@@ -26,7 +26,7 @@ public class Perceptron {
 			weights[i] = w;
 		}
 		biasWeight = rnd.nextDouble();
-		System.out.println(getCalculatedFunction());
+		//System.out.println(getCalculatedFunction());
 		ios = new InputsOutputs(numberOfInputs);
 	}
 	
