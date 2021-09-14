@@ -1,6 +1,7 @@
 package com.devashish;
 
 import java.util.Arrays;
+import java.util.HashMap;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -12,14 +13,65 @@ public class PerceptronExample {
 		testAndTrainORGate();
 		testAndTrainANDGate();
 		testAndTrainXORGate();
-		testAgeLogic();
-		
-		List<Integer> data = FileIO.readFile("imgs/train/circle_1.png");
-		System.out.println(data);
-		System.out.println(FileIO.listFilesPaths("imgs/train"));
-		
-		List<Integer> fileSizes = FileIO.listFilesPaths("imgs/train").stream().map(fName->FileIO.readFile(fName).size()).collect(Collectors.toList());
-		System.out.println(fileSizes);
+		testAgeLogic();// model to test if age is greater than or equals 18
+
+		String SHAPE_TO_IDENTIFY = "triangle";
+		runShapesClassification(SHAPE_TO_IDENTIFY);
+	}
+
+	private static void runShapesClassification(String SHAPE_TO_IDENTIFY) {
+
+		List<String> trainingFiles = FileIO.listFilesPaths("imgs/train");
+		System.out.println("Training files: " + "" + trainingFiles);
+
+		HashMap<String, List<Integer>> trainingFilesData = new HashMap<String, List<Integer>>();
+		trainingFiles.stream().forEach(fName -> trainingFilesData.put(fName, FileIO.readFile(fName)));
+		// images are stored as monochrome so that same resolution images are of same
+		// size(in terms of memory)
+		System.out.println("Training FileSizes:");
+		trainingFilesData.forEach((k, v) -> System.out.println(k + " size:" + v.size()));
+
+		Perceptron shapeImagesPerceptron = new Perceptron(1.0f, 1.0f,
+				trainingFilesData.get(trainingFiles.get(0)).size());
+		InputsOutputs ioShapeImages = shapeImagesPerceptron.getInputsOutputs();
+		trainingFilesData.forEach((k, v) -> {
+			try {
+				ioShapeImages.addInputs(v, (k.contains(SHAPE_TO_IDENTIFY) ? 1 : 0));
+			} catch (InvalidInputException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		});
+		try {
+			shapeImagesPerceptron.setLabelFor1(SHAPE_TO_IDENTIFY);
+			shapeImagesPerceptron.trainPerceptronNTimes(TRAIN_TIMES * 10);
+			shapeImagesPerceptron.dontShowDetailedOutput();
+			System.out.println("Shapes training complete");
+			System.out.println("results from trained/seen Inputs:");
+			shapeImagesPerceptron.computeAgainstTrainedInpusShowLabelFor1AsOutput();
+		} catch (InvalidInputException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		// calculating results for unseen images
+		List<String> testFiles = FileIO.listFilesPaths("imgs/test");
+		System.out.println("Training files: " + "" + testFiles);
+		HashMap<String, List<Integer>> testFilesData = new HashMap<String, List<Integer>>();
+		System.out.println("Test FileSizes:");
+		testFilesData.forEach((k, v) -> System.out.println(k + " size:" + v.size()));
+
+		testFiles.stream().forEach(fName -> testFilesData.put(fName, FileIO.readFile(fName)));
+
+		System.out.println("Results from unseen data");
+		testFilesData.forEach((k, v) -> {
+			try {
+				shapeImagesPerceptron.computeAgainstAnyInpusShowLabelFor1AsOutput(v,
+						(k.contains(SHAPE_TO_IDENTIFY) ? 1 : 0));
+			} catch (InvalidInputException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		});
 	}
 
 	private static void testAgeLogic() {

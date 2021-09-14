@@ -12,6 +12,8 @@ public class Perceptron {
 	private double biasWeight;
 	private int numberOfInputs;
 	private InputsOutputs ios;
+	private boolean showDetailedOutput = true;
+	private String labelFor1 = "";
 	
 	public Perceptron(double learningRate,double bias,int numberOfInputs) {
 		this.learningRate = learningRate;
@@ -26,6 +28,18 @@ public class Perceptron {
 		biasWeight = rnd.nextDouble();
 		System.out.println(getCalculatedFunction());
 		ios = new InputsOutputs(numberOfInputs);
+	}
+	
+	public void setLabelFor1(String labelFor1) {
+		this.labelFor1 = labelFor1;
+	}
+	
+	public void showDetailedOutput() {
+		this.showDetailedOutput = true;
+	}
+	
+	public void dontShowDetailedOutput() {
+		this.showDetailedOutput = false;
 	}
 	
 	public InputsOutputs getInputsOutputs() {
@@ -65,13 +79,13 @@ public class Perceptron {
 		//System.out.println("output: "+output+",eror:" +error+"=> biasWeight "+this.biasWeight);
 	}
 	
-	public void compute(List<Integer> data) throws InvalidInputException {
+	public void compute(String label, List<Integer> data) throws InvalidInputException {
 		Integer[] intArr = new Integer[data.size()];
 		data.toArray(intArr);
-		compute(intArr);
+		compute(label,intArr);
 	}
 	
-	public int compute(Integer[] data) throws InvalidInputException {
+	public int compute(String label,Integer[] data) throws InvalidInputException {
 		if(data.length!=this.numberOfInputs) {
 			throw new InvalidInputException(this.numberOfInputs,data.length);
 		}
@@ -86,8 +100,11 @@ public class Perceptron {
 		if(output>THRESHOLD) {
 			intOutput = 1;
 		}
-		
-		System.out.println("Result of "+Arrays.toString(data)+" is "+intOutput+" Calculated from function:"+getCalculatedFunction());
+		if(showDetailedOutput) {
+			System.out.println("Result of "+Arrays.toString(data)+" is "+intOutput+" Calculated from function:"+getCalculatedFunction());	
+		} else {
+			System.out.println("{expected:"+label+" computed:"+getCorrectLabel(intOutput)+"}");
+		}
 		return intOutput;
 	}
 	
@@ -122,8 +139,26 @@ public class Perceptron {
 	public void computeAgainstTrainedInpus() throws InvalidInputException {
 		for(int i=0;i<ios.getInputSize();i++) {
 			List<Integer> inputs = ios.getInputAtIndex(i);
-			compute(inputs);
+			compute(ios.getOutputAtIndex(i)+"",inputs);
 		}
+	}
+	
+	private String getCorrectLabel(int output) {
+		if(labelFor1.equals("")) {
+			return output+"";
+		}
+		return (output==1?labelFor1:"NOT "+labelFor1);
+	}
+	
+	public void computeAgainstTrainedInpusShowLabelFor1AsOutput() throws InvalidInputException {
+		for(int i=0;i<ios.getInputSize();i++) {
+			List<Integer> inputs = ios.getInputAtIndex(i);
+			compute(getCorrectLabel(ios.getOutputAtIndex(i))+"",inputs);
+		}
+	}
+	
+	public void computeAgainstAnyInpusShowLabelFor1AsOutput(List<Integer> inputs,int expectedOutput) throws InvalidInputException {
+		compute(getCorrectLabel(expectedOutput)+"",inputs);
 	}
 	
 }
