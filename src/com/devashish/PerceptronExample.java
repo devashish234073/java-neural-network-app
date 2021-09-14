@@ -71,7 +71,7 @@ public class PerceptronExample {
 				ioAge.addInputs(Arrays.asList(input), output);	
 			}
 			//training
-			agePerceptron.trainPerceptronNTimes(TRAIN_TIMES+50);
+			agePerceptron.trainPerceptronNTimes(TRAIN_TIMES+10);
 			//testing
 			agePerceptron.computeAgainstTrainedInpus();
 		} catch (InvalidInputException e1) {
