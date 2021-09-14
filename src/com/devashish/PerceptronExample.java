@@ -72,6 +72,8 @@ public class PerceptronExample {
 				e.printStackTrace();
 			}
 		});
+		System.out.println("The function that was calculated:");
+		System.out.println(shapeImagesPerceptron.getCalculatedFunction());
 	}
 
 	private static void testAgeLogic() {

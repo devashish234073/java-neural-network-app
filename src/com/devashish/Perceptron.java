@@ -108,7 +108,7 @@ public class Perceptron {
 		return intOutput;
 	}
 	
-	private String getCalculatedFunction() {
+	public String getCalculatedFunction() {
 		String f = "";
 		for(int i=0;i<this.weights.length;i++) {
 			if(f.equals("")) {
