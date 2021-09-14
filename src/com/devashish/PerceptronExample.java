@@ -1,6 +1,8 @@
 package com.devashish;
 
 import java.util.Arrays;
+import java.util.List;
+import java.util.stream.Collectors;
 
 public class PerceptronExample {
 
@@ -11,6 +13,13 @@ public class PerceptronExample {
 		testAndTrainANDGate();
 		testAndTrainXORGate();
 		testAgeLogic();
+		
+		List<Integer> data = FileIO.readFile("imgs/train/circle_1.png");
+		System.out.println(data);
+		System.out.println(FileIO.listFilesPaths("imgs/train"));
+		
+		List<Integer> fileSizes = FileIO.listFilesPaths("imgs/train").stream().map(fName->FileIO.readFile(fName).size()).collect(Collectors.toList());
+		System.out.println(fileSizes);
 	}
 
 	private static void testAgeLogic() {
