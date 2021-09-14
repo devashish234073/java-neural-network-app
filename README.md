@@ -4,6 +4,26 @@ This is a java based neural network app based on https://towardsdatascience.com/
 
 ![image](https://user-images.githubusercontent.com/20777854/133108042-de932ca7-cc3a-4a93-b061-5df57d0e968c.png)
 
+## UPDATE
+
+Extended the application to do image classification based on the exact same concept as for the AND gate one.
+
+
+
+To fit this classification into existing code the requirements were:
+
+1. to have the number of inputs same from each image just as in case of AND or OR gates we have just two inputs,
+
+2. the output needs to be binary , if classifying a triangle it results into "TRIANGLE" or "NOT TRIANGLE".
+
+
+
+Also since png/jpg does compression so for the test images I created shapes in different files with same dimension and saved them as monochrome bmp that made all the images of same size(memory) irrespective of number of colored pixels.
+
+
+
+These are simpler files and hence worked however there's still scope for further negative testing by using various sizes of the same shape, etc.
+
 The same Perceptron implementation is used to implement or, and and xor gate and a asic logic of checking if age is less than 18, while 60 rounds of training is sufficient to teach 'age>18 logic' and 10 rounds of training for 'or' and 'and' gates. It wasn't able to train itself even after 1000 round of training for xor gate.
 
 For OR gate its trained with all the possible inputs of OR and with 10 rounds of training , its able to compute from given inputs properly.
