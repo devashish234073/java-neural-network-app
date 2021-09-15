@@ -17,6 +17,66 @@ public class PerceptronExample {
 
 		String SHAPE_TO_IDENTIFY = "triangle";
 		runShapesClassification(SHAPE_TO_IDENTIFY);
+		String HERO_TO_IDENTIFY = "hritik";
+		runHeroClassification(HERO_TO_IDENTIFY);
+	}
+	
+	private static void runHeroClassification(String HERO_TO_IDENTIFY) {
+
+		List<String> trainingFiles = FileIO.listFilesPaths("img_complex/train");
+		System.out.println("Training files: " + "" + trainingFiles);
+
+		HashMap<String, List<Integer>> trainingFilesData = new HashMap<String, List<Integer>>();
+		trainingFiles.stream().forEach(fName -> trainingFilesData.put(fName, FileIO.readFile(fName)));
+		// images are stored as monochrome so that same resolution images are of same
+		// size(in terms of memory)
+		System.out.println("Training FileSizes:");
+		trainingFilesData.forEach((k, v) -> System.out.println(k + " size:" + v.size()));
+
+		Perceptron heroImagesPerceptron = new Perceptron(1.0f, 1.0f,
+				trainingFilesData.get(trainingFiles.get(0)).size());
+		InputsOutputs ioShapeImages = heroImagesPerceptron.getInputsOutputs();
+		trainingFilesData.forEach((k, v) -> {
+			try {
+				ioShapeImages.addInputs(v, (k.contains(HERO_TO_IDENTIFY) ? 1 : 0));
+			} catch (InvalidInputException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		});
+		try {
+			heroImagesPerceptron.setLabelFor1(HERO_TO_IDENTIFY);
+			heroImagesPerceptron.trainPerceptronNTimes(TRAIN_TIMES * 100);
+			heroImagesPerceptron.dontShowDetailedOutput();
+			System.out.println("Heroes training complete");
+			System.out.println("results from trained/seen Inputs:");
+			heroImagesPerceptron.computeAgainstTrainedInpusShowLabelFor1AsOutput();
+		} catch (InvalidInputException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		heroImagesPerceptron.getFunctionHistogram().forEach((k,v)->System.out.println(k+" "+v));
+		// calculating results for unseen images
+		List<String> testFiles = FileIO.listFilesPaths("img_complex/test");
+		System.out.println("Test files: " + "" + testFiles);
+		HashMap<String, List<Integer>> testFilesData = new HashMap<String, List<Integer>>();
+		System.out.println("Test FileSizes:");
+		testFilesData.forEach((k, v) -> System.out.println(k + " size:" + v.size()));
+
+		testFiles.stream().forEach(fName -> testFilesData.put(fName, FileIO.readFile(fName)));
+
+		System.out.println("Results from unseen data");
+		testFilesData.forEach((k, v) -> {
+			try {
+				heroImagesPerceptron.computeAgainstAnyInpusShowLabelFor1AsOutput(v,
+						(k.contains(HERO_TO_IDENTIFY) ? 1 : 0));
+			} catch (InvalidInputException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		});
+		//System.out.println("The function that was calculated:");
+		//System.out.println(shapeImagesPerceptron.getCalculatedFunction());
 	}
 
 	private static void runShapesClassification(String SHAPE_TO_IDENTIFY) {
@@ -55,7 +115,7 @@ public class PerceptronExample {
 		}
 		// calculating results for unseen images
 		List<String> testFiles = FileIO.listFilesPaths("imgs/test");
-		System.out.println("Training files: " + "" + testFiles);
+		System.out.println("Test files: " + "" + testFiles);
 		HashMap<String, List<Integer>> testFilesData = new HashMap<String, List<Integer>>();
 		System.out.println("Test FileSizes:");
 		testFilesData.forEach((k, v) -> System.out.println(k + " size:" + v.size()));

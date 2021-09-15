@@ -2,6 +2,9 @@ package com.devashish;
 import java.security.SecureRandom;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collection;
+import java.util.Comparator;
+import java.util.HashMap;
 import java.util.List;
 
 public class Perceptron {
@@ -120,6 +123,50 @@ public class Perceptron {
 		f+= "+ "+this.bias +" * "+this.biasWeight;
 		//String debugInfo = " {Weights:"+Arrays.toString(this.weights) + ",biasWeight:"+this.biasWeight+"}";
 		return " [f="+f+"]";
+	}
+	
+	public HashMap<String,Integer> getFunctionHistogram() {
+		HashMap<Integer,Integer> histo = new HashMap<Integer,Integer>(); 
+		for(int i=0;i<this.weights.length;i++) {
+			Double w = weights[i];
+			int wInt = Math.abs(w.intValue());
+			if(histo.get(wInt)==null) {
+				histo.put(wInt, 1);
+			} else {
+				histo.put(wInt, 1+histo.get(wInt));
+			}
+		}
+		Collection<Integer> coll = histo.keySet();
+		int max = coll.stream().max((n1,n2)->n1-n2).get();
+		int min = coll.stream().min((n1,n2)->n1-n2).get();
+		System.out.println("MAX_WEIGHT:"+max);
+		System.out.println("MAX_WEIGHT_ASSIGNED_TO:"+histo.get(max)+" points.");
+		System.out.println("MIN_WEIGHT:"+min);
+		System.out.println("MIN_WEIGHT_ASSIGNED_TO:"+histo.get(min)+" points.");
+		
+		HashMap<String,Integer> histo2 = new HashMap<String,Integer>(); 
+		for(int i=min;i<=max;i++) {
+			for(double PERCENT=0.1;PERCENT<=1.0;PERCENT+=0.1) {
+				Double from = (PERCENT-0.1)*max;
+				Double to = PERCENT*max;
+				if(i>=from && i<=to) {
+					String key = "[Weights from "+from.intValue()+" to "+to.intValue()+" assigend to]: ";
+					int frequencyOfValuei = histo.get(i)==null?0:histo.get(i);
+					if(histo2.get(key)==null) {
+						histo2.put(key, frequencyOfValuei);
+					} else {
+						histo2.put(key, frequencyOfValuei+histo2.get(key));
+					}
+				}	
+			}
+		}
+		/*coll.stream().max(new Comparator<Integer>() {
+			@Override
+			public int compare(Integer o1, Integer o2) {
+				return o1-o2;
+			}
+		});*/
+		return histo2;
 	}
 	
 	public void trainPerceptronNTimes(int n) throws InvalidInputException {
