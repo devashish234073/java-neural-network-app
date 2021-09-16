@@ -7,6 +7,12 @@ import java.util.Comparator;
 import java.util.HashMap;
 import java.util.List;
 
+/**
+ * @author Devashish Priyadarshi
+ * This class has all the methods for storing inputs , their corresponding outputs 
+ * Running training against those inputs
+ * And finally running tests on the trained inputs or on unseen inputs
+ */
 public class Perceptron {
 	private final double learningRate;
 	private final double bias;

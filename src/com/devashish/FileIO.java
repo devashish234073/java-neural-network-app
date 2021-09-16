@@ -6,6 +6,10 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * @author Devashish Priyadarshi
+ * This is a utility class for reading a binary file into list of integer array
+ */
 public class FileIO {
 	public static List<Integer> readFile(String filePath) {
 		List<Integer> data = new ArrayList<Integer>();

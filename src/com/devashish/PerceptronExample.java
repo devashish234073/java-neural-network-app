@@ -5,6 +5,15 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.stream.Collectors;
 
+/**
+ * @author Devashish Priyadarshi
+ * This is the main class that has all different functions for different models
+ * For examlpe "testAndTrainORGate()" function creates and trains a model based on the inputs and output sets of OR Gate
+ * Similarly the AND and XOR one, the XOR one fails however no matter how many rounds of training
+ * testAgeLogic() is the function training the model forthe logic (age<18?0:1)
+ * runShapesClassification() the imgs directory has images of shapes inside train and test directory a model is trained on the images in train and tested against the images in test directory
+ * runHeroClassification() the img_complex has images of actors inside train and test directory a model is trained on the images in train and tested against the images in test directory
+ */
 public class PerceptronExample {
 
 	private static int TRAIN_TIMES = 10;
@@ -21,6 +30,12 @@ public class PerceptronExample {
 		runHeroClassification(HERO_TO_IDENTIFY);
 	}
 	
+	/**
+	 * @param HERO_TO_IDENTIFY
+	 * HERO_TO_IDENTIFY is the String for the name of actor that needs to be identified 
+	 * and the putput is  value of HERO_TO_IDENTIFY or "NOT"+ vlaue of HERO_TO_IDENTIFY
+	 * the img_complex has images of actors inside train and test directory a model is trained on the images in train and tested against the images in test directory
+	 */
 	private static void runHeroClassification(String HERO_TO_IDENTIFY) {
 
 		List<String> trainingFiles = FileIO.listFilesPaths("img_complex/train");
@@ -79,6 +94,12 @@ public class PerceptronExample {
 		//System.out.println(shapeImagesPerceptron.getCalculatedFunction());
 	}
 
+	/**
+	 * @param SHAPE_TO_IDENTIFY
+	 * SHAPE_TO_IDENTIFY holds the value of the shape to identify and outputs returns if the shape provided is valueof(SHAPE_TO_IDENTIFY) or "NOT" + valueof(SHAPE_TO_IDENTIFY)
+	 * the imgs directory has images of shapes inside train and test directory a model is trained on the images in train and tested against the images in test directory
+	 * 
+	 */
 	private static void runShapesClassification(String SHAPE_TO_IDENTIFY) {
 
 		List<String> trainingFiles = FileIO.listFilesPaths("imgs/train");
@@ -136,6 +157,9 @@ public class PerceptronExample {
 		//System.out.println(shapeImagesPerceptron.getCalculatedFunction());
 	}
 
+	/**
+	 * creates and trains a model for the logic (age<18?0:1)
+	 */
 	private static void testAgeLogic() {
 		// returns 1 if age > 18
 		Perceptron agePerceptron = new Perceptron(1.0f, 1.0f, 1);
@@ -161,6 +185,9 @@ public class PerceptronExample {
 		}
 	}
 
+	/**
+	 * creates and trains a model for all the inputs of XOR gate
+	 */
 	private static void testAndTrainXORGate() {
 		Perceptron xorGatePerceptron = new Perceptron(1.0f, 1.0f, 2);
 		InputsOutputs ioXOR = xorGatePerceptron.getInputsOutputs();
@@ -180,6 +207,9 @@ public class PerceptronExample {
 		}
 	}
 
+	/**
+	 * creates and trains a model for all the inputs of AND gate
+	 */
 	private static void testAndTrainANDGate() {
 		Perceptron andGatePerceptron = new Perceptron(1.0f, 1.0f, 2);
 		InputsOutputs ioAND = andGatePerceptron.getInputsOutputs();
@@ -199,6 +229,9 @@ public class PerceptronExample {
 		}
 	}
 
+	/**
+	 * creates and trains a model for all the inputs of OR gate
+	 */
 	private static void testAndTrainORGate() {
 		Perceptron orGatePerceptron = new Perceptron(1.0f, 1.0f, 2);
 		InputsOutputs ioOR = orGatePerceptron.getInputsOutputs();

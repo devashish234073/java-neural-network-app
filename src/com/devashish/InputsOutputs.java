@@ -2,6 +2,12 @@ package com.devashish;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * @author Devashish Priyadarshi
+ * This is a utility class for grouping together list of inputs and outputs
+ * The size of inputsArr and outputs must be same , as they are linked by their 
+ * corresponding indexes
+ */
 public class InputsOutputs {
 	private ArrayList<List<Integer>> inputsArr = new ArrayList<List<Integer>>();
 	private ArrayList<Integer> outputs = new ArrayList<Integer>();
