@@ -8,12 +8,12 @@ The app starts with training some logic gates against all possible inputs and th
 
 When OR Gate training completes for example the output is :
 
----Training model for OR Gate---
-Result of [0, 0] is 0 Calculated from function: [f=I0 * 1.5006730136829658+ I1 * 1.6650976926846672+ 1.0 * -0.2737571815368699]
-Result of [0, 1] is 1 Calculated from function: [f=I0 * 1.5006730136829658+ I1 * 1.6650976926846672+ 1.0 * -0.2737571815368699]
-Result of [1, 0] is 1 Calculated from function: [f=I0 * 1.5006730136829658+ I1 * 1.6650976926846672+ 1.0 * -0.2737571815368699]
-Result of [1, 1] is 1 Calculated from function: [f=I0 * 1.5006730136829658+ I1 * 1.6650976926846672+ 1.0 * -0.2737571815368699]
--------------------
+###---Training model for OR Gate---
+###Result of [0, 0] is 0 Calculated from function: [f=I0 * 1.5006730136829658+ I1 * 1.6650976926846672+ 1.0 * -0.2737571815368699]
+###Result of [0, 1] is 1 Calculated from function: [f=I0 * 1.5006730136829658+ I1 * 1.6650976926846672+ 1.0 * -0.2737571815368699]
+###Result of [1, 0] is 1 Calculated from function: [f=I0 * 1.5006730136829658+ I1 * 1.6650976926846672+ 1.0 * -0.2737571815368699]
+###Result of [1, 1] is 1 Calculated from function: [f=I0 * 1.5006730136829658+ I1 * 1.6650976926846672+ 1.0 * -0.2737571815368699]
+###-------------------
 
 The model is predicting the values correctly and it has computed f=I0 * 1.5006730136829658+ I1 * 1.6650976926846672+ 1.0 * -0.2737571815368699 as the function 
  Where 1.5006730136829658 and 1.6650976926846672 are the weights on each inputs 
