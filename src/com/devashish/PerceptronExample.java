@@ -19,10 +19,10 @@ public class PerceptronExample {
 	private static int TRAIN_TIMES = 10;
 
 	public static void main(String[] args) {
-		testAndTrainORGate();
-		testAndTrainANDGate();
-		testAndTrainXORGate();
-		testAgeLogic();// model to test if age is greater than or equals 18
+		testAndTrainORGate("---Training model for OR Gate---");
+		testAndTrainANDGate("---Training model for AND Gate---");
+		testAndTrainXORGate("---Training model for XOR Gate---");
+		testAgeLogic("---Training model for (age<18:0:1) logic Gate---");// model to test if age is greater than or equals 18
 
 		String SHAPE_TO_IDENTIFY = "triangle";
 		runShapesClassification(SHAPE_TO_IDENTIFY);
@@ -37,19 +37,11 @@ public class PerceptronExample {
 	 * the img_complex has images of actors inside train and test directory a model is trained on the images in train and tested against the images in test directory
 	 */
 	private static void runHeroClassification(String HERO_TO_IDENTIFY) {
-
-		List<String> trainingFiles = FileIO.listFilesPaths("img_complex/train");
-		System.out.println("Training files: " + "" + trainingFiles);
-
-		HashMap<String, List<Integer>> trainingFilesData = new HashMap<String, List<Integer>>();
-		trainingFiles.stream().forEach(fName -> trainingFilesData.put(fName, FileIO.readFile(fName)));
-		// images are stored as monochrome so that same resolution images are of same
-		// size(in terms of memory)
-		System.out.println("Training FileSizes:");
-		trainingFilesData.forEach((k, v) -> System.out.println(k + " size:" + v.size()));
+		System.out.println("---Training model for identifying  "+HERO_TO_IDENTIFY+" (a bollywood actor)---");
+		HashMap<String, List<Integer>> trainingFilesData = FileIO.getFileNametoFileContentMap("img_complex/train");
 
 		Perceptron heroImagesPerceptron = new Perceptron(1.0f, 1.0f,
-				trainingFilesData.get(trainingFiles.get(0)).size());
+				trainingFilesData.values().stream().findAny().get().size());
 		InputsOutputs ioShapeImages = heroImagesPerceptron.getInputsOutputs();
 		trainingFilesData.forEach((k, v) -> {
 			try {
@@ -72,13 +64,7 @@ public class PerceptronExample {
 		}
 		heroImagesPerceptron.getFunctionHistogram().forEach((k,v)->System.out.println(k+" "+v));
 		// calculating results for unseen images
-		List<String> testFiles = FileIO.listFilesPaths("img_complex/test");
-		System.out.println("Test files: " + "" + testFiles);
-		HashMap<String, List<Integer>> testFilesData = new HashMap<String, List<Integer>>();
-		System.out.println("Test FileSizes:");
-		testFilesData.forEach((k, v) -> System.out.println(k + " size:" + v.size()));
-
-		testFiles.stream().forEach(fName -> testFilesData.put(fName, FileIO.readFile(fName)));
+		HashMap<String, List<Integer>> testFilesData = FileIO.getFileNametoFileContentMap("img_complex/test");
 
 		System.out.println("Results from unseen data");
 		testFilesData.forEach((k, v) -> {
@@ -92,6 +78,7 @@ public class PerceptronExample {
 		});
 		//System.out.println("The function that was calculated:");
 		//System.out.println(shapeImagesPerceptron.getCalculatedFunction());
+		System.out.println("-------------------");
 	}
 
 	/**
@@ -101,19 +88,10 @@ public class PerceptronExample {
 	 * 
 	 */
 	private static void runShapesClassification(String SHAPE_TO_IDENTIFY) {
-
-		List<String> trainingFiles = FileIO.listFilesPaths("imgs/train");
-		System.out.println("Training files: " + "" + trainingFiles);
-
-		HashMap<String, List<Integer>> trainingFilesData = new HashMap<String, List<Integer>>();
-		trainingFiles.stream().forEach(fName -> trainingFilesData.put(fName, FileIO.readFile(fName)));
-		// images are stored as monochrome so that same resolution images are of same
-		// size(in terms of memory)
-		System.out.println("Training FileSizes:");
-		trainingFilesData.forEach((k, v) -> System.out.println(k + " size:" + v.size()));
-
+		System.out.println("---Training model for identifying  "+SHAPE_TO_IDENTIFY+" shape---");
+		HashMap<String, List<Integer>> trainingFilesData = FileIO.getFileNametoFileContentMap("imgs/train");
 		Perceptron shapeImagesPerceptron = new Perceptron(1.0f, 1.0f,
-				trainingFilesData.get(trainingFiles.get(0)).size());
+				trainingFilesData.values().stream().findAny().get().size());
 		InputsOutputs ioShapeImages = shapeImagesPerceptron.getInputsOutputs();
 		trainingFilesData.forEach((k, v) -> {
 			try {
@@ -135,13 +113,7 @@ public class PerceptronExample {
 			e.printStackTrace();
 		}
 		// calculating results for unseen images
-		List<String> testFiles = FileIO.listFilesPaths("imgs/test");
-		System.out.println("Test files: " + "" + testFiles);
-		HashMap<String, List<Integer>> testFilesData = new HashMap<String, List<Integer>>();
-		System.out.println("Test FileSizes:");
-		testFilesData.forEach((k, v) -> System.out.println(k + " size:" + v.size()));
-
-		testFiles.stream().forEach(fName -> testFilesData.put(fName, FileIO.readFile(fName)));
+		HashMap<String, List<Integer>> testFilesData = FileIO.getFileNametoFileContentMap("imgs/test");
 
 		System.out.println("Results from unseen data");
 		testFilesData.forEach((k, v) -> {
@@ -155,18 +127,21 @@ public class PerceptronExample {
 		});
 		//System.out.println("The function that was calculated:");
 		//System.out.println(shapeImagesPerceptron.getCalculatedFunction());
+		System.out.println("-------------------");
 	}
 
 	/**
+	 * @param testLabel
 	 * creates and trains a model for the logic (age<18?0:1)
 	 */
-	private static void testAgeLogic() {
+	private static void testAgeLogic(String testLabel) {
+		System.out.println(testLabel);
 		// returns 1 if age > 18
 		Perceptron agePerceptron = new Perceptron(1.0f, 1.0f, 1);
 		InputsOutputs ioAge = agePerceptron.getInputsOutputs();
 		// adding inputs and outputs
 		try {
-			for (int i = 1; i < 100; i++) {
+			for (int i = 1; i < 50; i++) {
 				Integer[] input = new Integer[] { i };
 				;
 				int output = 1;
@@ -183,12 +158,15 @@ public class PerceptronExample {
 			// TODO Auto-generated catch block
 			e1.printStackTrace();
 		}
+		System.out.println("-------------------");
 	}
 
 	/**
+	 * @param testLabel
 	 * creates and trains a model for all the inputs of XOR gate
 	 */
-	private static void testAndTrainXORGate() {
+	private static void testAndTrainXORGate(String testLabel) {
+		System.out.println(testLabel);
 		Perceptron xorGatePerceptron = new Perceptron(1.0f, 1.0f, 2);
 		InputsOutputs ioXOR = xorGatePerceptron.getInputsOutputs();
 		// adding inputs and outputs
@@ -205,12 +183,15 @@ public class PerceptronExample {
 			// TODO Auto-generated catch block
 			e1.printStackTrace();
 		}
+		System.out.println("-------------------");
 	}
 
 	/**
+	 * @param testLabel
 	 * creates and trains a model for all the inputs of AND gate
 	 */
-	private static void testAndTrainANDGate() {
+	private static void testAndTrainANDGate(String testLabel) {
+		System.out.println(testLabel);
 		Perceptron andGatePerceptron = new Perceptron(1.0f, 1.0f, 2);
 		InputsOutputs ioAND = andGatePerceptron.getInputsOutputs();
 		// adding inputs and outputs
@@ -227,12 +208,15 @@ public class PerceptronExample {
 			// TODO Auto-generated catch block
 			e1.printStackTrace();
 		}
+		System.out.println("-------------------");
 	}
 
 	/**
+	 * @param testLabel
 	 * creates and trains a model for all the inputs of OR gate
 	 */
-	private static void testAndTrainORGate() {
+	private static void testAndTrainORGate(String testLabel) {
+		System.out.println(testLabel);
 		Perceptron orGatePerceptron = new Perceptron(1.0f, 1.0f, 2);
 		InputsOutputs ioOR = orGatePerceptron.getInputsOutputs();
 		// adding inputs and outputs
@@ -249,6 +233,7 @@ public class PerceptronExample {
 			// TODO Auto-generated catch block
 			e1.printStackTrace();
 		}
+		System.out.println("-------------------");
 	}
 
 }
